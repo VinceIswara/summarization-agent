@@ -1,0 +1,11 @@
+{
+  "id": "asst_zifV6CtPz2cJe5ALcGXpGKwF",
+  "version": {
+    "model": "gpt-4o",
+    "tools": [
+      {
+        "type": "file_search"
+      }
+    ]
+  }
+}

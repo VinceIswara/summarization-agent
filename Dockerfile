@@ -2,11 +2,16 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies including ones needed for PyMuPDF
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libc6-dev \
     libmagic1 \
+    # Additional dependencies for PyMuPDF
+    libmupdf-dev \
+    mupdf-tools \
+    libfreetype6-dev \
+    pkg-config \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
