@@ -40,6 +40,7 @@ services:
     volumes:
       - .:/app
       - ./tmp:/app/tmp
+      - ./data:/app/data
     ports:
       - "8000:8000"
     environment:
@@ -140,7 +141,9 @@ You should receive a response with `{"status": "ok"}`.
 The Docker Compose configuration includes volume mapping to enable:
 
 1. **Code Changes Without Rebuilding**: The `.:/app` mapping allows code changes to be reflected in the container without rebuilding.
-2. **Persistent Storage**: The `./tmp:/app/tmp` mapping ensures that temporary files (like extracted images) are accessible from the host machine.
+2. **Persistent Storage**: 
+   - The `./tmp:/app/tmp` mapping ensures that temporary files (like extracted images) are accessible from the host machine for debugging or inspection.
+   - The `./data:/app/data` mapping provides persistent storage for the SQLite database (`image_hashes.db`) used for image deduplication. You **must** create a `data` directory in your project root before running `docker-compose up`.
 
 ## Environment Variables
 
@@ -205,20 +208,25 @@ docker-compose logs -f --tail=100 app
    - Verify that the required environment variables are set
    - Ensure ports are not already in use by another application
 
-2. **Application errors**:
+2. **SQLite Error: `unable to open database file`**:
+   - Ensure you have created the `./data` directory in the project root **before** starting the containers.
+   - On macOS or Windows with Docker Desktop, check Docker Desktop's File Sharing settings (Preferences > Resources > File Sharing) to ensure your project directory is accessible to Docker.
+   - Verify file system permissions allow the Docker process to write to the `./data` directory on your host machine.
+
+3. **Application errors**:
    - Check application logs with `docker-compose logs -f app`
    - Verify that the OPENAI_API_KEY is valid
    - Check if the tmp directory has proper permissions
 
-3. **Permission issues with mounted volumes**:
+4. **Permission issues with mounted volumes**:
    - Run `chmod -R 777 ./tmp` to grant full permissions to the tmp directory
    - Verify ownership of mounted directories
 
-4. **Network connectivity issues**:
+5. **Network connectivity issues**:
    - Check if the container can access the internet with `docker-compose exec app ping openai.com`
    - Verify Docker network settings
 
-5. **Changes not reflecting**:
+6. **Changes not reflecting**:
    - Ensure you're editing the files on the host, not in the container
    - Check if automatic reload is working (`--reload` flag in command)
    - Try restarting the containers with `docker-compose restart`
@@ -313,4 +321,3 @@ For production environments, consider the following adjustments:
 - [Python Docker Best Practices](https://pythonspeed.com/docker/)
 
 http://localhost:8000
-

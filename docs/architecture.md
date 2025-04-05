@@ -45,10 +45,9 @@ The Summarization Agent implements a modular, service-oriented architecture desi
    - Report versioning
 
 6. **Storage System**
-   - (Planned) Supabase database integration
-   - Document and summary storage
-   - User preferences and settings
-   - Processing history and audit logs
+   - **Supabase**: (Planned) PostgreSQL-based database
+   - **SQLite**: Local file-based database for image hash persistence (`./data/image_hashes.db`)
+   - **SQLAlchemy**: (Planned) ORM for database interactions
 
 7. **Notification System**
    - (Planned) Email notifications
@@ -94,6 +93,7 @@ The Summarization Agent follows a clear data flow pattern:
 
 ### Data Storage
 - **Supabase**: (Planned) PostgreSQL-based database
+- **SQLite**: Local file-based database for image hash persistence (`./data/image_hashes.db`)
 - **SQLAlchemy**: (Planned) ORM for database interactions
 
 ### Containerization and Deployment
@@ -193,6 +193,7 @@ summarization-agent/
 │ ├── storage/ # Data persistence
 │ ├── notification/ # Notification services
 │ └── utils/ # Utility functions and helpers
+├── data/ # Persistent data storage (e.g., SQLite DB)
 ├── tests/ # Automated tests
 ├── docs/ # Documentation
 ├── scripts/ # Utility scripts
@@ -291,4 +292,3 @@ The architecture is designed to accommodate future enhancements:
 - [Docker Documentation](https://docs.docker.com/)
 - [PyMuPDF Documentation](https://pymupdf.readthedocs.io/)
 - [Supabase Documentation](https://supabase.io/docs)
-

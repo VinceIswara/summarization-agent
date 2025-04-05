@@ -14,6 +14,7 @@ The Summarization Agent uses cutting-edge AI technology to analyze emails, PDFs,
 - **Intelligent Summarization**: Generates structured, bullet-point summaries focused on key information
 - **Visual Content Analysis**: Extracts and describes images, charts, and diagrams from documents
 - **Resource Efficiency**: Implements assistant caching and reuse for optimal performance
+- **Image Deduplication**: Uses a local SQLite database to avoid reprocessing identical images across documents.
 - **Docker Integration**: Runs in containerized environments for easy deployment
 
 ## Architecture
@@ -32,6 +33,7 @@ The system is built with a modular architecture:
 - **AI**: OpenAI GPT-4o and Assistants API
 - **PDF Processing**: PyMuPDF for text and image extraction
 - **Containerization**: Docker and Docker Compose
+- **Image Hash Storage**: SQLite (local file in `./data`)
 - **Data Storage**: Supabase (planned)
 - **Notifications**: SendGrid and Twilio (planned)
 
@@ -57,12 +59,17 @@ The system is built with a modular architecture:
    # Edit .env with your API keys and configuration
    ```
 
-3. Build and start the Docker containers:
+3. Create the data directory for the image hash database:
+   ```bash
+   mkdir data
+   ```
+
+4. Build and start the Docker containers:
    ```bash
    docker-compose up --build
    ```
 
-4. The API will be available at `http://localhost:8000`
+5. The API will be available at `http://localhost:8000`
 
 ### Usage
 
@@ -92,6 +99,7 @@ summarization-agent/
 │ ├── config.py # Configuration management
 │ ├── main.py # FastAPI application
 │ └── tasks.py # Background task handling
+├── data/ # Stores persistent data like the image hash SQLite DB (gitignored)
 ├── tests/ # Unit and integration tests
 ├── docker-compose.yml # Docker configuration
 ├── Dockerfile # Application container definition
@@ -133,4 +141,3 @@ uvicorn src.main:app --reload
 ## License
 
 [MIT License](LICENSE)
-
